@@ -1,0 +1,7 @@
+{
+  "name": "MarketProb",
+  "description": "Professional financial market analytics dashboard with real-time TradingView charts, algorithmic trend probability, and capital position sizing.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

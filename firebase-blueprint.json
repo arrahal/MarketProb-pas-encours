@@ -1,0 +1,160 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile document containing trader account details and preferences",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Firebase Auth UID matching request.auth.uid"
+        },
+        "email": {
+          "type": "string",
+          "description": "Trader verified email address"
+        },
+        "displayName": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Trader display name"
+        },
+        "photoURL": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Avatar photo URL"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation server timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Update server timestamp"
+        }
+      },
+      "required": ["userId", "email", "createdAt", "updatedAt"]
+    },
+    "WatchlistItem": {
+      "title": "WatchlistItem",
+      "description": "Asset pinned by trader to personal watchlist",
+      "type": "object",
+      "properties": {
+        "assetId": {
+          "type": "string",
+          "maxLength": 64,
+          "description": "Unique identifier of the financial instrument"
+        },
+        "symbol": {
+          "type": "string",
+          "maxLength": 32,
+          "description": "Ticker symbol (e.g. BTC/USD, EUR/USD)"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["crypto", "forex", "commodities"],
+          "description": "Asset class category"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when added to watchlist"
+        }
+      },
+      "required": ["assetId", "symbol", "category", "createdAt"]
+    },
+    "SavedAnalysis": {
+      "title": "SavedAnalysis",
+      "description": "Saved Gemini financial news sentiment analysis breakdown",
+      "type": "object",
+      "properties": {
+        "headline": {
+          "type": "string",
+          "maxLength": 300,
+          "description": "Breaking market headline analyzed"
+        },
+        "sentiment": {
+          "type": "string",
+          "enum": ["BULLISH", "BEARISH", "NEUTRAL"],
+          "description": "Algorithmic bias calculated"
+        },
+        "arabicAnalysis": {
+          "type": "string",
+          "maxLength": 1000,
+          "description": "Synthesized 2-sentence Arabic breakdown"
+        },
+        "probabilityShift": {
+          "type": "number",
+          "description": "Shift percentage applied to market probability"
+        },
+        "relatedAsset": {
+          "type": "string",
+          "maxLength": 32,
+          "description": "Ticker symbol associated with the news"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp of analysis"
+        }
+      },
+      "required": ["headline", "sentiment", "arabicAnalysis", "relatedAsset", "createdAt"]
+    },
+    "TradeSetup": {
+      "title": "TradeSetup",
+      "description": "Recorded risk and position calculation plan",
+      "type": "object",
+      "properties": {
+        "symbol": {
+          "type": "string",
+          "maxLength": 32,
+          "description": "Ticker symbol"
+        },
+        "entryPrice": {
+          "type": "number",
+          "description": "Target entry price"
+        },
+        "stopLossPrice": {
+          "type": "number",
+          "description": "Stop loss price"
+        },
+        "takeProfitPrice": {
+          "type": "number",
+          "description": "Take profit price"
+        },
+        "lotSize": {
+          "type": "number",
+          "description": "Recommended lot size or coin quantity"
+        },
+        "dollarRisk": {
+          "type": "number",
+          "description": "Total dollar amount risked"
+        },
+        "riskRewardRatio": {
+          "type": "number",
+          "description": "Calculated risk to reward ratio"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp"
+        }
+      },
+      "required": ["symbol", "entryPrice", "stopLossPrice", "takeProfitPrice", "lotSize", "dollarRisk", "riskRewardRatio", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "Trader profile and settings"
+    },
+    "/users/{userId}/watchlist/{assetId}": {
+      "schema": { "$ref": "#/entities/WatchlistItem" },
+      "description": "Trader pinned assets watchlist"
+    },
+    "/users/{userId}/savedAnalyses/{analysisId}": {
+      "schema": { "$ref": "#/entities/SavedAnalysis" },
+      "description": "Trader saved AI market analyses"
+    },
+    "/users/{userId}/tradeSetups/{setupId}": {
+      "schema": { "$ref": "#/entities/TradeSetup" },
+      "description": "Trader recorded position calculations"
+    }
+  }
+}
